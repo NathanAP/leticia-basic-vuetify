@@ -1,10 +1,9 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import vuetify from './plugins/vuetify'
-import { loadFonts } from './plugins/webfontloader'
+import { createApp } from "vue";
+import App from "./App.vue";
+import vuetify from "./plugins/vuetify";
 
-loadFonts()
+let app = createApp(App);
 
-createApp(App)
-  .use(vuetify)
-  .mount('#app')
+app.use(vuetify);
+
+app.mount("#app");

@@ -1,23 +1,23 @@
+<script setup>
+import Dashboard from "./views/Dashboard.vue";
+</script>
+
 <template>
-  <v-app>
-    <v-main>
-      <HelloWorld/>
-    </v-main>
-  </v-app>
+    <v-app>
+        <v-main>
+            <Dashboard />
+        </v-main>
+    </v-app>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
-  },
-
-  data: () => ({
-    //
-  }),
+<style lang="scss">
+* {
+    font-family: "Roboto";
 }
-</script>
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+</style>
