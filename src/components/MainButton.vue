@@ -15,6 +15,7 @@ const props = defineProps({
         rounded="lg"
         :name="props.name"
         :color="props.color"
+        :disabled="props.disabled"
         @click="props.callback"
     >
         <span class="button-label"> {{ props.label }}</span>

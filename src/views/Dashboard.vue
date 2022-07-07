@@ -1,38 +1,42 @@
 <script setup>
 import { ref } from "vue";
+import BarChart from "../components/BarChart.vue";
+import PieChart from "../components/PieChart.vue";
 import MainButton from "../components/MainButton.vue";
 import MainTextField from "../components/MainTextField.vue";
+import { buttonNames } from "../util/dashboard";
 
 const startingDate = ref("");
 const endingDate = ref("");
+
+const generalData = ref([20, 40, 35, 5]);
 
 const actualButton = ref("");
 const isLoading = ref(false);
 
 function buttonFilter(buttonName) {
-    //  TROCAR A LÓGICA DA COR PARA O DISABLED
     if (actualButton.value === buttonName) return;
     actualButton.value = buttonName;
 
     switch (buttonName) {
-        case "expired-button": {
-            console.log("Clicou no expired");
+        case buttonNames.EXPIRED_BUTTON: {
+            generalData.value = [10, 20, 30, 40];
             break;
         }
-        case "completed-button": {
-            console.log("Clicou no completed");
+        case buttonNames.COMPLETED_BUTTON: {
+            generalData.value = [40, 30, 20, 10];
             break;
         }
-        case "in-course-button": {
-            console.log("Clicou no in-course");
+        case buttonNames.IN_COURSE_BUTTON: {
+            generalData.value = [20, 40, 10, 30];
             break;
         }
-        case "open-button": {
-            console.log("Clicou no open");
+        case buttonNames.OPEN_BUTTON: {
+            generalData.value = [20, 30, 10, 40];
             break;
         }
-        case "summary-button": {
-            console.log("Clicou no summary");
+        case buttonNames.SUMMARY_BUTTON: {
+            generalData.value = [30, 10, 40, 20];
             break;
         }
     }
@@ -79,37 +83,39 @@ function buttonFilter(buttonName) {
                             <v-row>
                                 <v-col offset="1" cols="2">
                                     <MainButton
-                                        name="expired-button"
                                         label="Expiradas"
                                         class="button-session"
-                                        :color="
-                                            actualButton === 'expired-button'
-                                                ? 'grey'
-                                                : 'blue'
+                                        color="light-blue-darken-1"
+                                        :name="buttonNames.EXPIRED_BUTTON"
+                                        :disabled="
+                                            isLoading ||
+                                            actualButton ===
+                                                buttonNames.EXPIRED_BUTTON
                                         "
-                                        :disable="isLoading"
                                         :callback="
                                             () => {
-                                                buttonFilter('expired-button');
+                                                buttonFilter(
+                                                    buttonNames.EXPIRED_BUTTON
+                                                );
                                             }
                                         "
                                     />
                                 </v-col>
                                 <v-col cols="2">
                                     <MainButton
-                                        name="completed-button"
                                         label="Concluídas"
                                         class="button-session"
-                                        :color="
-                                            actualButton === 'completed-button'
-                                                ? 'grey'
-                                                : 'green'
+                                        color="green-darken-1"
+                                        :name="buttonNames.COMPLETED_BUTTON"
+                                        :disabled="
+                                            isLoading ||
+                                            actualButton ===
+                                                buttonNames.COMPLETED_BUTTON
                                         "
-                                        :disable="isLoading"
                                         :callback="
                                             () => {
                                                 buttonFilter(
-                                                    'completed-button'
+                                                    buttonNames.COMPLETED_BUTTON
                                                 );
                                             }
                                         "
@@ -117,19 +123,19 @@ function buttonFilter(buttonName) {
                                 </v-col>
                                 <v-col cols="2">
                                     <MainButton
-                                        name="in-course-button"
                                         label="Em andamento"
                                         class="button-session"
-                                        :color="
-                                            actualButton === 'in-course-button'
-                                                ? 'grey'
-                                                : 'yellow'
+                                        color="yellow-darken-3"
+                                        :name="buttonNames.IN_COURSE_BUTTON"
+                                        :disabled="
+                                            isLoading ||
+                                            actualButton ===
+                                                buttonNames.IN_COURSE_BUTTON
                                         "
-                                        :disable="isLoading"
                                         :callback="
                                             () => {
                                                 buttonFilter(
-                                                    'in-course-button'
+                                                    buttonNames.IN_COURSE_BUTTON
                                                 );
                                             }
                                         "
@@ -137,38 +143,94 @@ function buttonFilter(buttonName) {
                                 </v-col>
                                 <v-col cols="2">
                                     <MainButton
-                                        name="open-button"
                                         label="Em aberto"
                                         class="button-session"
-                                        :color="
-                                            actualButton === 'open-button'
-                                                ? 'grey'
-                                                : 'red'
+                                        color="red-lighten-1"
+                                        :name="buttonNames.OPEN_BUTTON"
+                                        :disabled="
+                                            isLoading ||
+                                            actualButton ===
+                                                buttonNames.OPEN_BUTTON
                                         "
-                                        :disable="isLoading"
                                         :callback="
                                             () => {
-                                                buttonFilter('open-button');
+                                                buttonFilter(
+                                                    buttonNames.OPEN_BUTTON
+                                                );
                                             }
                                         "
                                     />
                                 </v-col>
                                 <v-col cols="2">
                                     <MainButton
-                                        name="summary-button"
                                         label="Resumo"
                                         class="button-session"
-                                        :color="
-                                            actualButton === 'summary-button'
-                                                ? 'grey'
-                                                : 'purple'
+                                        color="purple-lighten-1"
+                                        :name="buttonNames.SUMMARY_BUTTON"
+                                        :disabled="
+                                            isLoading ||
+                                            actualButton ===
+                                                buttonNames.SUMMARY_BUTTON
                                         "
-                                        :disable="isLoading"
                                         :callback="
                                             () => {
-                                                buttonFilter('summary-button');
+                                                buttonFilter(
+                                                    buttonNames.SUMMARY_BUTTON
+                                                );
                                             }
                                         "
+                                    />
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-col>
+                    <v-col cols="12" class="graph-session text-center">
+                        <v-container>
+                            <v-row>
+                                <v-col
+                                    offset="1"
+                                    cols="4"
+                                    class="general-historic"
+                                >
+                                    <PieChart
+                                        title="Dados históricos"
+                                        :labels="[
+                                            'Expiradas',
+                                            'Concluídas',
+                                            'Em andamento',
+                                            'Em aberto',
+                                        ]"
+                                        :data="generalData"
+                                        :colors="[
+                                            '#0395dc',
+                                            '#409a44',
+                                            '#efa124',
+                                            '#e6504d',
+                                            '#ae4ebf',
+                                        ]"
+                                    />
+                                </v-col>
+                                <v-col
+                                    offset="2"
+                                    cols="4"
+                                    class="month-historic"
+                                >
+                                    <BarChart
+                                        title="Histórico mensal"
+                                        :labels="[
+                                            'Expiradas',
+                                            'Concluídas',
+                                            'Em andamento',
+                                            'Em aberto',
+                                        ]"
+                                        :data="generalData"
+                                        :colors="[
+                                            '#0395dc',
+                                            '#409a44',
+                                            '#efa124',
+                                            '#e6504d',
+                                            '#ae4ebf',
+                                        ]"
                                     />
                                 </v-col>
                             </v-row>
@@ -196,6 +258,14 @@ function buttonFilter(buttonName) {
 }
 
 .container-button-session {
-    background-color: #cccccc;
+    background-color: #d4d4d4;
+}
+
+.general-historic {
+    background-color: white;
+}
+
+.month-historic {
+    background-color: white;
 }
 </style>
