@@ -3,6 +3,8 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import router from "./plugins/router";
 
+import "./plugins/axios";
+
 import {
     Chart as ChartJS,
     Title,

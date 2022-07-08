@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "chart.js": "^3.8.0",
     "mdi-vue": "^3.0.13",
     "sass": "^1.53.0",
