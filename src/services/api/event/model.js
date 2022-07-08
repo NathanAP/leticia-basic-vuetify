@@ -1,4 +1,4 @@
-class Event {
+export default class Event {
     constructor(object = {}) {
         this.id = object.id_ocorrencia;
         this.date = object.dt_ocorrencia;

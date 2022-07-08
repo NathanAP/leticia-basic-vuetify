@@ -5,7 +5,7 @@ const PATH = "/ocorrencias";
 
 async function getEvents() {
     try {
-        let url = `${PATH}/?`;
+        let url = `${PATH}`;
 
         const response = await axios.get(url);
         return response;

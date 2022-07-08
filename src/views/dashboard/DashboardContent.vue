@@ -6,6 +6,11 @@ import MainButton from "../../components/MainButton.vue";
 import MainTextField from "../../components/MainTextField.vue";
 import { buttonNames } from "../../util/dashboard";
 
+import Event from "../../services/api/event/model";
+import { getEvents } from "../../services/api/event/request";
+
+const eventList = ref([]);
+
 const startingDate = ref("");
 const endingDate = ref("");
 
@@ -13,6 +18,21 @@ const generalData = ref([20, 40, 35, 5]);
 
 const actualButton = ref("");
 const isLoading = ref(false);
+
+async function findEvents() {
+    const response = await getEvents();
+    console.log(response);
+
+    if (response.status === 200) {
+        eventList.value = [];
+        for (const object of response.data.items) {
+            const event = new Event(object);
+            eventList.value.push(event);
+        }
+
+        console.log(eventList);
+    }
+}
 
 function buttonFilter(buttonName) {
     if (actualButton.value === buttonName) return;
@@ -41,6 +61,8 @@ function buttonFilter(buttonName) {
         }
     }
 }
+
+await findEvents();
 </script>
 
 <template>
