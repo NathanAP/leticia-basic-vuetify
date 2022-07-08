@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from "vue";
-import BarChart from "../components/BarChart.vue";
-import PieChart from "../components/PieChart.vue";
-import MainButton from "../components/MainButton.vue";
-import MainTextField from "../components/MainTextField.vue";
-import { buttonNames } from "../util/dashboard";
+import BarChart from "../../components/BarChart.vue";
+import PieChart from "../../components/PieChart.vue";
+import MainButton from "../../components/MainButton.vue";
+import MainTextField from "../../components/MainTextField.vue";
+import { buttonNames } from "../../util/dashboard";
 
 const startingDate = ref("");
 const endingDate = ref("");
