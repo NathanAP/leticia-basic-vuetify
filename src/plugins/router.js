@@ -5,6 +5,10 @@ const Dashboard = () => import("../views/dashboard/Dashboard.vue");
 const DashboardContent = () =>
     import("../views/dashboard/DashboardContent.vue");
 
+const Datatable = () => import("../views/datatable/Datatable.vue");
+const DatatableContent = () =>
+    import("../views/datatable/DatatableContent.vue");
+
 const NotFound = () => import("../views/notFound/NotFound.vue");
 const NotFoundContent = () => import("../views/notFound/NotFoundContent.vue");
 
@@ -25,16 +29,16 @@ const router = createRouter({
                 },
             ],
         },
-        // Expirados
+        // Datatable
         {
-            path: "/expired",
-            component: Dashboard,
+            path: "/datatable",
+            component: Datatable,
             children: [
                 {
-                    path: "/expired",
-                    name: "expired",
+                    path: "/",
+                    name: "datatable",
                     components: {
-                        default: DashboardContent,
+                        default: DatatableContent,
                     },
                 },
             ],
