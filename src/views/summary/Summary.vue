@@ -1,6 +1,4 @@
-<script setup>
-console.log(1);
-</script>
+<script setup></script>
 
 <template>
     <Suspense>

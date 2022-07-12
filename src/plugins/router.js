@@ -9,6 +9,9 @@ const Datatable = () => import("../views/datatable/Datatable.vue");
 const DatatableContent = () =>
     import("../views/datatable/DatatableContent.vue");
 
+const Summary = () => import("../views/summary/Summary.vue");
+const SummaryContent = () => import("../views/summary/SummaryContent.vue");
+
 const NotFound = () => import("../views/notFound/NotFound.vue");
 const NotFoundContent = () => import("../views/notFound/NotFoundContent.vue");
 
@@ -35,10 +38,24 @@ const router = createRouter({
             component: Datatable,
             children: [
                 {
-                    path: "/",
+                    path: "",
                     name: "datatable",
                     components: {
                         default: DatatableContent,
+                    },
+                },
+            ],
+        },
+        // Summary
+        {
+            path: "/summary",
+            component: Summary,
+            children: [
+                {
+                    path: "",
+                    name: "summary",
+                    components: {
+                        default: SummaryContent,
                     },
                 },
             ],

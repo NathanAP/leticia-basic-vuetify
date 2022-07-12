@@ -6,11 +6,10 @@ import BarChart from "../../components/BarChart.vue";
 import PieChart from "../../components/PieChart.vue";
 import MainButton from "../../components/MainButton.vue";
 import MainTextField from "../../components/MainTextField.vue";
-import { buttonNames } from "../../util/dashboard";
-
 import Event from "../../services/api/event/model";
 import { status } from "../../services/api/event/helper";
 import { getEvents } from "../../services/api/event/request";
+import { buttonNames } from "../../util/dashboard";
 
 const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
@@ -26,7 +25,6 @@ const completedList = ref([]);
 const inCourseList = ref([]);
 const openList = ref([]);
 
-const actualButton = ref("");
 const isLoading = ref(false);
 
 async function findEvents() {
@@ -140,11 +138,7 @@ function redirectButton(buttonStatus) {
                                         color="light-blue-darken-1"
                                         :label="t('default.main.expired')"
                                         :name="buttonNames.EXPIRED_BUTTON"
-                                        :disabled="
-                                            isLoading ||
-                                            actualButton ===
-                                                buttonNames.EXPIRED_BUTTON
-                                        "
+                                        :disabled="isLoading"
                                         :callback="
                                             () => {
                                                 redirectButton(status.EXPIRED);
@@ -158,11 +152,7 @@ function redirectButton(buttonStatus) {
                                         color="green-darken-1"
                                         :label="t('default.main.completed')"
                                         :name="buttonNames.COMPLETED_BUTTON"
-                                        :disabled="
-                                            isLoading ||
-                                            actualButton ===
-                                                buttonNames.COMPLETED_BUTTON
-                                        "
+                                        :disabled="isLoading"
                                         :callback="
                                             () => {
                                                 redirectButton(
@@ -178,11 +168,7 @@ function redirectButton(buttonStatus) {
                                         color="yellow-darken-3"
                                         :label="t('default.main.inCourse')"
                                         :name="buttonNames.IN_COURSE_BUTTON"
-                                        :disabled="
-                                            isLoading ||
-                                            actualButton ===
-                                                buttonNames.IN_COURSE_BUTTON
-                                        "
+                                        :disabled="isLoading"
                                         :callback="
                                             () => {
                                                 redirectButton(
@@ -198,11 +184,7 @@ function redirectButton(buttonStatus) {
                                         color="red-lighten-1"
                                         :label="t('default.main.open')"
                                         :name="buttonNames.OPEN_BUTTON"
-                                        :disabled="
-                                            isLoading ||
-                                            actualButton ===
-                                                buttonNames.OPEN_BUTTON
-                                        "
+                                        :disabled="isLoading"
                                         :callback="
                                             () => {
                                                 redirectButton(status.OPEN);
@@ -216,11 +198,7 @@ function redirectButton(buttonStatus) {
                                         color="purple-lighten-1"
                                         :label="t('default.main.summary')"
                                         :name="buttonNames.SUMMARY_BUTTON"
-                                        :disabled="
-                                            isLoading ||
-                                            actualButton ===
-                                                buttonNames.SUMMARY_BUTTON
-                                        "
+                                        :disabled="isLoading"
                                         :callback="
                                             () => {
                                                 redirectButton(
@@ -233,7 +211,7 @@ function redirectButton(buttonStatus) {
                             </v-row>
                         </v-container>
                     </v-col>
-                    <v-col cols="12" class="graph-session text-center">
+                    <v-col cols="12" class="text-center">
                         <v-container>
                             <v-row>
                                 <v-col
