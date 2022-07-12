@@ -1,0 +1,42 @@
+{
+    "pt-BR": {
+        "default": {
+            "main": {
+                "title": "Dados gerenciais",
+                "filterTitle": "Indicador de período",
+                "filterStartingDate": "Data início",
+                "filterEndingDate": "Data fim",
+                "expired": "Expiradas",
+                "completed": "Completadas",
+                "inCourse": "Em andamento",
+                "open": "Em aberto",
+                "summary": "Resumo",
+                "pieChartTitle": "Dados históricos",
+                "barChartTitle": "Histórico mensal"
+            }
+        },
+        "dateTimeFormats": {
+            "short": {
+                "year": "numeric",
+                "month": "short",
+                "day": "numeric"
+            },
+            "long": {
+                "year": "numeric",
+                "month": "long",
+                "day": "numeric",
+                "weekday": "long",
+                "hour": "numeric",
+                "minute": "numeric",
+                "hour12": false
+            }
+        },
+        "numberFormats": {
+            "currency": {
+                "style": "currency",
+                "currency": "BRL",
+                "currencyDisplay": "symbol"
+            }
+        }
+    }
+}

@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import BarChart from "../../components/BarChart.vue";
 import PieChart from "../../components/PieChart.vue";
@@ -12,13 +13,14 @@ import { status } from "../../services/api/event/helper";
 import { getEvents } from "../../services/api/event/request";
 
 const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 
 const eventList = ref([]);
 
 const startingDate = ref("");
 const endingDate = ref("");
 
-const dataSummarized = ref([20, 40, 35, 5]);
+const dataSummarized = ref([20, 10, 40, 5]);
 const expiredList = ref([]);
 const completedList = ref([]);
 const inCourseList = ref([]);
@@ -88,12 +90,16 @@ function redirectButton(buttonStatus) {
     <v-container class="main-content">
         <v-row>
             <v-col cols="12">
-                <span class="main-title"> Dados gerenciais </span>
+                <span class="main-title">
+                    {{ t("default.main.title") }}
+                </span>
             </v-col>
             <v-col cols="12">
                 <v-row justify="end">
                     <v-col cols="12" sm="12" md="8" lg="4" xl="4">
-                        <p class="indicator-title">Indicador de período</p>
+                        <p class="indicator-title">
+                            {{ t("default.main.filterTitle") }}
+                        </p>
                     </v-col>
                 </v-row>
                 <v-row justify="end">
@@ -101,8 +107,8 @@ function redirectButton(buttonStatus) {
                         <MainTextField
                             v-model="startingDate"
                             name="starting-date"
-                            label="Data início"
                             placeholder="01/01/2022"
+                            :label="t('default.main.filterStartingDate')"
                             :disabled="isLoading"
                         />
                     </v-col>
@@ -110,8 +116,8 @@ function redirectButton(buttonStatus) {
                         <MainTextField
                             v-model="endingDate"
                             name="ending-date"
-                            label="Data fim"
                             placeholder="01/01/2022"
+                            :label="t('default.main.filterEndingDate')"
                             :disabled="isLoading"
                         />
                     </v-col>
@@ -130,9 +136,9 @@ function redirectButton(buttonStatus) {
                                     xl="2"
                                 >
                                     <MainButton
-                                        label="Expiradas"
                                         class="button-session"
                                         color="light-blue-darken-1"
+                                        :label="t('default.main.expired')"
                                         :name="buttonNames.EXPIRED_BUTTON"
                                         :disabled="
                                             isLoading ||
@@ -148,9 +154,9 @@ function redirectButton(buttonStatus) {
                                 </v-col>
                                 <v-col cols="12" sm="12" md="4" lg="2" xl="2">
                                     <MainButton
-                                        label="Concluídas"
                                         class="button-session"
                                         color="green-darken-1"
+                                        :label="t('default.main.completed')"
                                         :name="buttonNames.COMPLETED_BUTTON"
                                         :disabled="
                                             isLoading ||
@@ -168,9 +174,9 @@ function redirectButton(buttonStatus) {
                                 </v-col>
                                 <v-col cols="12" sm="12" md="4" lg="2" xl="2">
                                     <MainButton
-                                        label="Em andamento"
                                         class="button-session"
                                         color="yellow-darken-3"
+                                        :label="t('default.main.inCourse')"
                                         :name="buttonNames.IN_COURSE_BUTTON"
                                         :disabled="
                                             isLoading ||
@@ -188,9 +194,9 @@ function redirectButton(buttonStatus) {
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6" lg="2" xl="2">
                                     <MainButton
-                                        label="Em aberto"
                                         class="button-session"
                                         color="red-lighten-1"
+                                        :label="t('default.main.open')"
                                         :name="buttonNames.OPEN_BUTTON"
                                         :disabled="
                                             isLoading ||
@@ -206,9 +212,9 @@ function redirectButton(buttonStatus) {
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6" lg="2" xl="2">
                                     <MainButton
-                                        label="Resumo"
                                         class="button-session"
                                         color="purple-lighten-1"
+                                        :label="t('default.main.summary')"
                                         :name="buttonNames.SUMMARY_BUTTON"
                                         :disabled="
                                             isLoading ||
@@ -241,12 +247,12 @@ function redirectButton(buttonStatus) {
                                     class="general-historic"
                                 >
                                     <PieChart
-                                        title="Dados históricos"
+                                        :title="t('default.main.pieChartTitle')"
                                         :labels="[
-                                            'Expiradas',
-                                            'Concluídas',
-                                            'Em andamento',
-                                            'Em aberto',
+                                            t('default.main.expired'),
+                                            t('default.main.completed'),
+                                            t('default.main.inCourse'),
+                                            t('default.main.open'),
                                         ]"
                                         :data="dataSummarized"
                                         :colors="[
@@ -270,12 +276,12 @@ function redirectButton(buttonStatus) {
                                     class="month-historic"
                                 >
                                     <BarChart
-                                        title="Histórico mensal"
+                                        :title="t('default.main.barChartTitle')"
                                         :labels="[
-                                            'Expiradas',
-                                            'Concluídas',
-                                            'Em andamento',
-                                            'Em aberto',
+                                            t('default.main.expired'),
+                                            t('default.main.completed'),
+                                            t('default.main.inCourse'),
+                                            t('default.main.open'),
                                         ]"
                                         :data="dataSummarized"
                                         :colors="[
