@@ -1,13 +1,18 @@
 <script setup>
+import moment from "moment";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
-import { status } from "../../services/api/event/helper";
+import { status, statusKeys } from "../../services/api/event/helper";
 import Event from "../../services/api/event/model";
-
-console.log(2);
+import { getEvents } from "../../services/api/event/request";
+import EventType from "../../services/api/eventType/model";
+import { getEventTypes } from "../../services/api/eventType/request";
 
 const route = useRoute();
+const { t } = useI18n({ useScope: "global" });
 
+const title = ref("");
 const selectedStatus = ref(null);
 const eventList = ref([]);
 const equipmentList = ref([]);
@@ -19,6 +24,29 @@ const isLoading = ref(false);
 if (route.params) {
     const params = route.params;
     selectedStatus.value = status[params.dataToSearch];
+
+    switch (selectedStatus.value) {
+        case 0: {
+            title.value = "Occorrências em aberto";
+            break;
+        }
+        case 1: {
+            title.value = "Occorrências completadas";
+            break;
+        }
+        case 2: {
+            title.value = "Occorrências em andamento";
+            break;
+        }
+        case 3: {
+            title.value = "Occorrências expiradas";
+            break;
+        }
+        default: {
+            title.value = "Todas as ocorrências";
+            break;
+        }
+    }
 }
 
 async function findEvents() {
@@ -27,8 +55,8 @@ async function findEvents() {
     eventList.value = [];
 
     const response = await getEvents({ statusId: selectedStatus.value });
-    if (response.status === 200) {
-        for (const object of response.data.items) {
+    if (response.items) {
+        for (const object of response.items) {
             const event = new Event(object);
             eventList.value.push(event);
         }
@@ -41,18 +69,33 @@ async function findEvents() {
     isLoading.value = false;
 }
 
+async function findEventType() {
+    isLoading.value = true;
+
+    eventTypeList.value = [];
+
+    const response = await getEventTypes();
+    if (response.items) {
+        for (const object of response.items) {
+            const type = new EventType(object);
+            eventTypeList.value.push(type);
+        }
+    }
+
+    isLoading.value = false;
+}
+
 async function findEquipments() {}
 async function findPriorities() {}
-async function findEventType() {}
 
-// await findEvents();
+await findEvents();
 </script>
 
 <template>
     <v-container class="main-content">
         <v-row>
             <v-col cols="12">
-                <span class="main-title"> Ocorrências em aberto </span>
+                <span class="main-title"> {{ title }} </span>
             </v-col>
             <v-col cols="12">
                 <v-table>
@@ -72,10 +115,31 @@ async function findEventType() {}
                     <tbody>
                         <tr v-for="event in eventList" :key="event.id">
                             <td>{{ event.id }}</td>
-                            <td>{{ event.data }}</td>
+                            <td>
+                                {{
+                                    new moment(event.date).format("DD/MM/YYYY")
+                                }}
+                            </td>
                             <td>{{ event.equipamentId }}</td>
-                            <td>{{ event.statusId }}</td>
+                            <td>
+                                {{
+                                    t(
+                                        `default.status.${statusKeys[
+                                            event.statusId
+                                        ].toLowerCase()}`
+                                    )
+                                }}
+                            </td>
                             <td>{{ event.priorityId }}</td>
+                            <td>
+                                {{
+                                    (
+                                        eventTypeList.find(
+                                            (type) => type.id === event.typeId
+                                        ) || { name: "" }
+                                    ).name
+                                }}
+                            </td>
                             <td>{{ event.responsable }}</td>
                             <td>{{ event.notify ? "Sim" : "Não" }}</td>
                             <td>{{ event.text }}</td>

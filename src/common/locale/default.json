@@ -13,6 +13,12 @@
                 "summary": "Resumo",
                 "pieChartTitle": "Dados históricos",
                 "barChartTitle": "Histórico mensal"
+            },
+            "status": {
+                "expired": "Expirada",
+                "completed": "Completada",
+                "inCourse": "Em andamento",
+                "open": "Em aberto"
             }
         },
         "dateTimeFormats": {

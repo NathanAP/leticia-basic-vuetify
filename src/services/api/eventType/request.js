@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const PATH = "/ocorrencias";
+const PATH = "/tipo_ocorrencias";
 
-async function getEvents(query = {}) {
+async function getEventTypes(query = {}) {
     try {
         let url = `${PATH}`;
 
@@ -13,12 +13,8 @@ async function getEvents(query = {}) {
 
         while (hasMorePages) {
             const response = await axios.get(url);
-            if (
-                response.data &&
-                response.data.items &&
-                response.data.items.length > 0
-            )
-                allItems.items.push(...response.data.items);
+            if (response.data && response.data.length > 0)
+                allItems.items.push(...response.data);
 
             // hasMorePages = allItems.length >= response.total;
             hasMorePages = false;
@@ -32,4 +28,4 @@ async function getEvents(query = {}) {
     }
 }
 
-export { getEvents };
+export { getEventTypes };

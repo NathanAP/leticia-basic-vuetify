@@ -8,7 +8,7 @@ import { getEvents } from "../../services/api/event/request";
 
 const { t } = useI18n({ useScope: "global" });
 
-const dataSummarized = ref([20, 10, 40, 5]);
+const dataSummarized = ref([]);
 const expiredList = ref([]);
 const completedList = ref([]);
 const inCourseList = ref([]);
@@ -27,8 +27,8 @@ async function findEvents() {
 
     const response = await getEvents();
 
-    if (response.status === 200) {
-        for (const object of response.data.items) {
+    if (response.items) {
+        for (const object of response.items) {
             const event = new Event(object);
             switch (event.statusId) {
                 case status.OPEN: {
@@ -61,7 +61,7 @@ async function findEvents() {
     isLoading.value = false;
 }
 
-// await findEvents();
+await findEvents();
 </script>
 
 <template>

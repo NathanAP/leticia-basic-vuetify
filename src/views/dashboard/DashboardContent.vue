@@ -7,7 +7,7 @@ import PieChart from "../../components/PieChart.vue";
 import MainButton from "../../components/MainButton.vue";
 import MainTextField from "../../components/MainTextField.vue";
 import Event from "../../services/api/event/model";
-import { status } from "../../services/api/event/helper";
+import { status, statusList } from "../../services/api/event/helper";
 import { getEvents } from "../../services/api/event/request";
 import { buttonNames } from "../../util/dashboard";
 
@@ -19,7 +19,7 @@ const eventList = ref([]);
 const startingDate = ref("");
 const endingDate = ref("");
 
-const dataSummarized = ref([20, 10, 40, 5]);
+const dataSummarized = ref([]);
 const expiredList = ref([]);
 const completedList = ref([]);
 const inCourseList = ref([]);
@@ -38,8 +38,8 @@ async function findEvents() {
 
     const response = await getEvents();
 
-    if (response.status === 200) {
-        for (const object of response.data.items) {
+    if (response.items) {
+        for (const object of response.items) {
             const event = new Event(object);
             switch (event.statusId) {
                 case status.OPEN: {
@@ -75,13 +75,18 @@ async function findEvents() {
 function redirectButton(buttonStatus) {
     isLoading.value = true;
 
-    router.push({
-        name: "datatable",
-        params: { dataToSearch: statusList[buttonStatus] },
-    });
+    if (buttonStatus !== buttonNames.SUMMARY_BUTTON)
+        router.push({
+            name: "datatable",
+            params: { dataToSearch: statusList[buttonStatus] },
+        });
+    else
+        router.push({
+            name: "summary",
+        });
 }
 
-// await findEvents();
+await findEvents();
 </script>
 
 <template>
