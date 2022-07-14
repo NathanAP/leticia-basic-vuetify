@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import BarChart from "../../components/BarChart.vue";
 import Event from "../../services/api/event/model";
 import { status } from "../../services/api/event/helper";
-import { getEvents } from "../../services/api/event/request";
+import { getAllEvents } from "../../services/api/event/request";
 
 const { t } = useI18n({ useScope: "global" });
 
@@ -25,10 +25,10 @@ async function findEvents() {
     inCourseList.value = [];
     openList.value = [];
 
-    const response = await getEvents();
+    const response = await getAllEvents();
 
-    if (response.items) {
-        for (const object of response.items) {
+    if (Array.isArray(response) && response.length > 0) {
+        for (const object of response) {
             const event = new Event(object);
             switch (event.statusId) {
                 case status.OPEN: {

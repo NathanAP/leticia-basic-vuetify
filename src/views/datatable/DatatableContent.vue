@@ -4,8 +4,10 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import { status, statusKeys } from "../../services/api/event/helper";
+import Equipment from "../../services/api/equipment/model";
+import { getAllEquipments } from "../../services/api/equipment/request";
 import Event from "../../services/api/event/model";
-import { getEvents } from "../../services/api/event/request";
+import { getAllEvents } from "../../services/api/event/request";
 import EventType from "../../services/api/eventType/model";
 import { getEventTypes } from "../../services/api/eventType/request";
 
@@ -16,7 +18,6 @@ const title = ref("");
 const selectedStatus = ref(null);
 const eventList = ref([]);
 const equipmentList = ref([]);
-const priorityList = ref([]);
 const eventTypeList = ref([]);
 
 const isLoading = ref(false);
@@ -44,6 +45,7 @@ if (route.params) {
         }
         default: {
             title.value = "Todas as ocorrências";
+            selectedStatus.value = -1;
             break;
         }
     }
@@ -54,17 +56,39 @@ async function findEvents() {
 
     eventList.value = [];
 
-    const response = await getEvents({ statusId: selectedStatus.value });
-    if (response.items) {
-        for (const object of response.items) {
-            const event = new Event(object);
-            eventList.value.push(event);
+    const response = await getAllEvents({ statusId: selectedStatus.value });
+    if (Array.isArray(response) && response.length > 0) {
+        if (response) {
+            for (const object of response) {
+                const event = new Event(object);
+                if (
+                    selectedStatus.value === -1 ||
+                    selectedStatus.value === event.statusId
+                )
+                    eventList.value.push(event);
+            }
         }
     }
 
     if (equipmentList.value.length === 0) await findEquipments();
-    if (priorityList.value.length === 0) await findPriorities();
     if (eventTypeList.value.length === 0) await findEventType();
+
+    isLoading.value = false;
+}
+
+async function findEquipments() {
+    isLoading.value = true;
+
+    equipmentList.value = [];
+
+    const response = await getAllEquipments();
+
+    if (Array.isArray(response) && response.length > 0) {
+        for (const object of response) {
+            const type = new Equipment(object);
+            equipmentList.value.push(type);
+        }
+    }
 
     isLoading.value = false;
 }
@@ -84,9 +108,6 @@ async function findEventType() {
 
     isLoading.value = false;
 }
-
-async function findEquipments() {}
-async function findPriorities() {}
 
 await findEvents();
 </script>
@@ -113,14 +134,30 @@ await findEvents();
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="event in eventList" :key="event.id">
+                        <tr v-if="eventList.length === 0">
+                            <td class="no-data text-center" colspan="9">
+                                Não há dados
+                            </td>
+                        </tr>
+
+                        <tr v-else v-for="event in eventList" :key="event.id">
                             <td>{{ event.id }}</td>
                             <td>
                                 {{
                                     new moment(event.date).format("DD/MM/YYYY")
                                 }}
                             </td>
-                            <td>{{ event.equipamentId }}</td>
+                            <td>
+                                {{
+                                    (
+                                        equipmentList.find(
+                                            (equipment) =>
+                                                equipment.id ===
+                                                event.equipmentId
+                                        ) || { name: "" }
+                                    ).name
+                                }}
+                            </td>
                             <td>
                                 {{
                                     t(
@@ -130,7 +167,13 @@ await findEvents();
                                     )
                                 }}
                             </td>
-                            <td>{{ event.priorityId }}</td>
+                            <td>
+                                {{
+                                    t(
+                                        `default.priorities.${event.priority.toLowerCase()}`
+                                    )
+                                }}
+                            </td>
                             <td>
                                 {{
                                     (
@@ -160,5 +203,9 @@ await findEvents();
 .main-title {
     font-size: 1.5rem;
     font-weight: 600;
+}
+
+.no-data {
+    font-size: 2rem !important;
 }
 </style>

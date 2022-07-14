@@ -1,3 +1,5 @@
+import { priorityKeys } from "./helper";
+
 export default class Event {
     constructor(object = {}) {
         this.id = object.id_ocorrencia;
@@ -7,10 +9,12 @@ export default class Event {
         this.conclusion = object.txt_conclusao;
         this.notify = object.notificar;
         this.responsable = object.responsavel;
+        this.priority = object.id_prioridade
+            ? priorityKeys[object.id_prioridade + 1]
+            : "NORMAL";
 
-        this.equipamentId = object.id_equipamento;
+        this.equipmentId = object.id_equipamento;
         this.statusId = object.id_status;
         this.typeId = object.idtipo;
-        this.priorityId = object.id_prioridade;
     }
 }

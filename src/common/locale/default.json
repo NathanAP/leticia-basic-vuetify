@@ -19,6 +19,11 @@
                 "completed": "Completada",
                 "inCourse": "Em andamento",
                 "open": "Em aberto"
+            },
+            "priorities": {
+                "low": "Baixa",
+                "normal": "Normal",
+                "high": "Alta"
             }
         },
         "dateTimeFormats": {

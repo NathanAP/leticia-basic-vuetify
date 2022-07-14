@@ -3,16 +3,16 @@ import Client from "./model";
 
 const PATH = "/equipamentos";
 
-async function getEquipaments() {
+async function getAllEquipments() {
     try {
-        let url = `${PATH}/?`;
+        let url = `${PATH}-all`;
 
         const response = await axios.get(url);
-        return response;
+        return response.data;
     } catch (error) {
         if (error.response) return error.response;
         throw new Error(error);
     }
 }
 
-export { getEquipaments };
+export { getAllEquipments };
