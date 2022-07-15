@@ -1,8 +1,10 @@
 import defaultMessages from "../common/locale/default.json";
 
+const availableLocales = ["pt-BR"];
+
 const fallbackLocale = "pt-BR";
 let locale = navigator.language;
-if (!locale) locale = "pt-BR";
+if (!locale || !availableLocales.includes(locale)) locale = "pt-BR";
 
 let messages = {};
 messages[locale] = {
