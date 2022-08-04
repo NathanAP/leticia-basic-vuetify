@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import BarChart from "../../components/BarChart.vue";
 import Event from "../../services/api/event/model";
 import { status } from "../../services/api/event/helper";
 import { getAllEvents } from "../../services/api/event/request";
 
+const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
 
 const dataSummarized = ref([]);
@@ -68,7 +70,15 @@ await findEvents();
     <v-container class="main-content">
         <v-row>
             <v-col cols="12">
-                <span class="main-title"> Resumo </span>
+                <v-row>
+                    <v-btn
+                        icon="fas fa-arrow-left"
+                        elevation="0"
+                        color="transparent"
+                        @click="router.push({ name: 'dashboard' })"
+                    ></v-btn>
+                    <span class="main-title"> Resumo </span>
+                </v-row>
             </v-col>
             <v-col cols="12" class="text-center">
                 <v-table>
@@ -130,6 +140,7 @@ await findEvents();
 }
 
 .main-title {
+    padding-left: 1rem;
     font-size: 1.5rem;
     font-weight: 600;
 }

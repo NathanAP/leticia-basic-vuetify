@@ -2,7 +2,7 @@
 import moment from "moment";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { status, statusKeys } from "../../services/api/event/helper";
 import Equipment from "../../services/api/equipment/model";
 import { getAllEquipments } from "../../services/api/equipment/request";
@@ -12,6 +12,7 @@ import EventType from "../../services/api/eventType/model";
 import { getEventTypes } from "../../services/api/eventType/request";
 
 const route = useRoute();
+const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
 
 const title = ref("");
@@ -116,7 +117,15 @@ await findEvents();
     <v-container class="main-content">
         <v-row>
             <v-col cols="12">
-                <span class="main-title"> {{ title }} </span>
+                <v-row>
+                    <v-btn
+                        icon="fas fa-arrow-left"
+                        elevation="0"
+                        color="transparent"
+                        @click="router.push({ name: 'dashboard' })"
+                    ></v-btn>
+                    <span class="main-title"> {{ title }} </span>
+                </v-row>
             </v-col>
             <v-col cols="12">
                 <v-table>
@@ -201,6 +210,7 @@ await findEvents();
 }
 
 .main-title {
+    padding-left: 1rem;
     font-size: 1.5rem;
     font-weight: 600;
 }
