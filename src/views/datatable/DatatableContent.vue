@@ -21,10 +21,17 @@ const eventList = ref([]);
 const equipmentList = ref([]);
 const eventTypeList = ref([]);
 
+const startingDate = ref("");
+const endingDate = ref("");
+
 const isLoading = ref(false);
 
 if (route.params) {
     const params = route.params;
+
+    startingDate.value = params.startingDate;
+    endingDate.value = params.endingDate;
+
     selectedStatus.value = status[params.dataToSearch];
 
     switch (selectedStatus.value) {
@@ -50,6 +57,8 @@ if (route.params) {
             break;
         }
     }
+
+    await findEvents();
 }
 
 async function findEvents() {
@@ -57,7 +66,12 @@ async function findEvents() {
 
     eventList.value = [];
 
-    const response = await getAllEvents({ statusId: selectedStatus.value });
+    const query = {};
+    if (startingDate.value) query.startingDate = startingDate.value;
+    if (endingDate.value) query.endingDate = endingDate.value;
+
+    const response = await getAllEvents(query);
+
     if (Array.isArray(response) && response.length > 0) {
         if (response) {
             for (const object of response) {
@@ -109,8 +123,6 @@ async function findEventType() {
 
     isLoading.value = false;
 }
-
-await findEvents();
 </script>
 
 <template>

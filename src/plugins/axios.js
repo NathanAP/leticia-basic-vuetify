@@ -7,7 +7,7 @@ axios.defaults.baseURL = `http://${localServer}:${localPort}`;
 
 // DESCOMENTAR QUANDO USAR EM API PUBLICA
 // const publicServer =
-//     "https://47f7-2804-14c-b6-9015-15c5-22d6-e26c-ea.sa.ngrok.io/v1";
+//     "https://b23f-2804-14c-b6-9015-dcc9-f4ee-6135-bcdf.sa.ngrok.io/v1";
 // axios.defaults.baseURL = `${publicServer}`;
 
 axios.defaults.headers.common["Content-Type"] = "application/json";

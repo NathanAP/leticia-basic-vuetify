@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import BarChart from "../../components/BarChart.vue";
@@ -27,6 +27,14 @@ const openList = ref([]);
 
 const isLoading = ref(false);
 
+watch(startingDate, () => {
+    findEvents();
+});
+
+watch(endingDate, () => {
+    findEvents();
+});
+
 async function findEvents() {
     isLoading.value = true;
 
@@ -36,7 +44,11 @@ async function findEvents() {
     inCourseList.value = [];
     openList.value = [];
 
-    const response = await getAllEvents();
+    const query = {};
+    if (startingDate.value) query.startingDate = startingDate.value;
+    if (endingDate.value) query.endingDate = endingDate.value;
+
+    const response = await getAllEvents(query);
 
     if (Array.isArray(response) && response.length > 0) {
         for (const object of response) {
@@ -78,11 +90,19 @@ function redirectButton(buttonStatus) {
     if (buttonStatus !== buttonNames.SUMMARY_BUTTON)
         router.push({
             name: "datatable",
-            params: { dataToSearch: statusList[buttonStatus] },
+            params: {
+                dataToSearch: statusList[buttonStatus],
+                startingDate: startingDate.value,
+                endingDate: endingDate.value,
+            },
         });
     else
         router.push({
             name: "summary",
+            params: {
+                startingDate: startingDate.value,
+                endingDate: endingDate.value,
+            },
         });
 }
 
@@ -110,6 +130,7 @@ await findEvents();
                         <MainTextField
                             v-model="startingDate"
                             name="starting-date"
+                            type="date"
                             placeholder="01/01/2022"
                             :label="t('default.main.filterStartingDate')"
                             :disabled="isLoading"
@@ -119,6 +140,7 @@ await findEvents();
                         <MainTextField
                             v-model="endingDate"
                             name="ending-date"
+                            type="date"
                             placeholder="01/01/2022"
                             :label="t('default.main.filterEndingDate')"
                             :disabled="isLoading"

@@ -1,12 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import BarChart from "../../components/BarChart.vue";
 import Event from "../../services/api/event/model";
 import { status } from "../../services/api/event/helper";
 import { getAllEvents } from "../../services/api/event/request";
 
+const route = useRoute();
 const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
 
@@ -16,7 +17,19 @@ const completedList = ref([]);
 const inCourseList = ref([]);
 const openList = ref([]);
 
+const startingDate = ref("");
+const endingDate = ref("");
+
 const isLoading = ref(false);
+
+if (route.params) {
+    const params = route.params;
+
+    startingDate.value = params.startingDate;
+    endingDate.value = params.endingDate;
+
+    await findEvents();
+}
 
 async function findEvents() {
     isLoading.value = true;
@@ -27,7 +40,11 @@ async function findEvents() {
     inCourseList.value = [];
     openList.value = [];
 
-    const response = await getAllEvents();
+    const query = {};
+    if (startingDate.value) query.startingDate = startingDate.value;
+    if (endingDate.value) query.endingDate = endingDate.value;
+
+    const response = await getAllEvents(query);
 
     if (Array.isArray(response) && response.length > 0) {
         for (const object of response) {
@@ -62,8 +79,6 @@ async function findEvents() {
 
     isLoading.value = false;
 }
-
-await findEvents();
 </script>
 
 <template>
