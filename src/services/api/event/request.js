@@ -4,16 +4,15 @@ const PATH = "/ocorrencias";
 
 async function getAllEvents(query) {
     try {
-        let url = `${PATH}-all/?`;
+        let url;
 
-        if (query) {
+        if (query && (query.startingDate || query.endingDate)) {
+            url = `${PATH}/?`;
             if (query.startingDate) url += `date_start=${query.startingDate}&`;
             if (query.endingDate) url += `date_end=${query.endingDate}&`;
-        }
+        } else url = `${PATH}-all/?`;
 
         if (url.endsWith("?") || url.endsWith("&")) url = url.replace(/.$/, "");
-
-        console.log(url);
 
         const response = await axios.get(url);
         return response.data;
