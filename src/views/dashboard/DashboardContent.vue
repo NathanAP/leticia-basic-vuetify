@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import BarChart from "../../components/BarChart.vue";
 import PieChart from "../../components/PieChart.vue";
 import MainButton from "../../components/MainButton.vue";
@@ -11,6 +11,7 @@ import { status, statusList } from "../../services/api/event/helper";
 import { getAllEvents } from "../../services/api/event/request";
 import { buttonNames } from "../../util/dashboard";
 
+const route = useRoute();
 const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
 
@@ -27,13 +28,23 @@ const openList = ref([]);
 
 const isLoading = ref(false);
 
-watch(startingDate, () => {
-    findEvents();
-});
+console.log(route.params);
+if (route.params) {
+    const params = route.params;
 
-watch(endingDate, () => {
-    findEvents();
-});
+    startingDate.value = params.startingDate;
+    endingDate.value = params.endingDate;
+
+    await findEvents();
+}
+
+// watch(startingDate, () => {
+//     findEvents();
+// });
+
+// watch(endingDate, () => {
+//     findEvents();
+// });
 
 async function findEvents() {
     isLoading.value = true;
@@ -105,8 +116,6 @@ function redirectButton(buttonStatus) {
             },
         });
 }
-
-await findEvents();
 </script>
 
 <template>
@@ -119,7 +128,7 @@ await findEvents();
             </v-col>
             <v-col cols="12">
                 <v-row justify="end">
-                    <v-col cols="12" sm="12" md="8" lg="4" xl="4">
+                    <v-col cols="12" sm="12" md="8" lg="5" xl="5">
                         <p class="indicator-title">
                             {{ t("default.main.filterTitle") }}
                         </p>
@@ -144,6 +153,17 @@ await findEvents();
                             placeholder="01/01/2022"
                             :label="t('default.main.filterEndingDate')"
                             :disabled="isLoading"
+                        />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="2" lg="1" xl="1">
+                        <MainButton
+                            name="Filter"
+                            class="button-session"
+                            color="blue-darken-4"
+                            size="large"
+                            :label="t('default.main.filter')"
+                            :disabled="isLoading"
+                            :callback="findEvents"
                         />
                     </v-col>
                 </v-row>
@@ -314,7 +334,7 @@ await findEvents();
 }
 
 .main-title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 600;
 }
 

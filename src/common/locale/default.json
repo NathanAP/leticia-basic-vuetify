@@ -6,8 +6,9 @@
                 "filterTitle": "Indicador de período",
                 "filterStartingDate": "Data início",
                 "filterEndingDate": "Data fim",
+                "filter": "Filtrar",
                 "expired": "Expiradas",
-                "completed": "Completadas",
+                "completed": "Concluídas",
                 "inCourse": "Em andamento",
                 "open": "Em aberto",
                 "summary": "Resumo",
@@ -16,7 +17,7 @@
             },
             "status": {
                 "expired": "Expirada",
-                "completed": "Completada",
+                "completed": "Concluída",
                 "inCourse": "Em andamento",
                 "open": "Em aberto"
             },

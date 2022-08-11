@@ -26,6 +26,7 @@ const endingDate = ref("");
 
 const isLoading = ref(false);
 
+console.log(route.params);
 if (route.params) {
     const params = route.params;
 
@@ -134,7 +135,15 @@ async function findEventType() {
                         icon="fas fa-arrow-left"
                         elevation="0"
                         color="transparent"
-                        @click="router.push({ name: 'dashboard' })"
+                        @click="
+                            router.push({
+                                name: 'dashboard',
+                                params: {
+                                    startingDate,
+                                    endingDate,
+                                },
+                            })
+                        "
                     ></v-btn>
                     <span class="main-title"> {{ title }} </span>
                 </v-row>
@@ -143,15 +152,15 @@ async function findEventType() {
                 <v-table>
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Data</th>
-                            <th>Equipamento</th>
-                            <th>Status</th>
-                            <th>Prioridade</th>
-                            <th>Tipo de ocorrência</th>
-                            <th>Responsável</th>
-                            <th>Notificar cliente</th>
-                            <th>Ocorrência</th>
+                            <th class="text-header">#</th>
+                            <th class="text-header">Data</th>
+                            <th class="text-header">Equipamento</th>
+                            <th class="text-header">Status</th>
+                            <th class="text-header">Prioridade</th>
+                            <th class="text-header">Tipo de ocorrência</th>
+                            <th class="text-header">Responsável</th>
+                            <th class="text-header">Notificar cliente</th>
+                            <th class="text-header">Ocorrência</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -223,11 +232,16 @@ async function findEventType() {
 
 .main-title {
     padding-left: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 600;
 }
 
 .no-data {
     font-size: 2rem !important;
+}
+
+.text-header {
+    font-size: 1rem !important;
+    font-weight: 600;
 }
 </style>

@@ -90,7 +90,15 @@ async function findEvents() {
                         icon="fas fa-arrow-left"
                         elevation="0"
                         color="transparent"
-                        @click="router.push({ name: 'dashboard' })"
+                        @click="
+                            router.push({
+                                name: 'dashboard',
+                                params: {
+                                    startingDate,
+                                    endingDate,
+                                },
+                            })
+                        "
                     ></v-btn>
                     <span class="main-title"> Resumo </span>
                 </v-row>
@@ -156,7 +164,7 @@ async function findEvents() {
 
 .main-title {
     padding-left: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 600;
 }
 

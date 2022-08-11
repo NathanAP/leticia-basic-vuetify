@@ -4,6 +4,7 @@ const props = defineProps({
     label: { type: String, required: true },
     color: { type: String, required: true },
     disabled: { type: Boolean, default: false },
+    size: { type: String, default: "x-large" },
     callback: { type: Function, required: true },
 });
 </script>
@@ -11,11 +12,12 @@ const props = defineProps({
 <template>
     <v-btn
         block
-        size="x-large"
         rounded="lg"
+        elevation="1"
         :name="props.name"
         :color="props.color"
         :disabled="props.disabled"
+        :size="props.size"
         @click="props.callback"
     >
         <span class="button-label"> {{ props.label }}</span>

@@ -9,7 +9,7 @@
         </template>
         <template #fallback>
             <div>
-                <span> Loading ... </span>
+                <span> Carregando ... </span>
             </div>
         </template>
     </Suspense>
